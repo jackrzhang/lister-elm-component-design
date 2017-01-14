@@ -1,6 +1,6 @@
-module App.Input.Interface exposing (..)
+module App.Input.Types exposing (..)
 
-import State.Types exposing (Msg)
+import State.Types exposing (..)
 
 
 type alias Interface =

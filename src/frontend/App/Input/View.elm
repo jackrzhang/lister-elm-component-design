@@ -6,7 +6,7 @@ import Html.Events exposing (onInput)
 --import Utility.OnEnter exposing (onEnter)
 
 import State.Types exposing (Msg)
-import App.Input.Interface exposing (Interface)
+import App.Input.Types exposing (Interface)
 
 
 -- VIEW

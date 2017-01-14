@@ -5,7 +5,7 @@ import Html exposing (Html)
 import State.Types exposing (..)
 import State.Input.Types as Input
 import App.Input.View exposing (view)
-import App.Input.Interface exposing (Interface)
+import App.Input.Types exposing (..)
 
 
 -- CONTAINER
@@ -34,7 +34,6 @@ updateInput : String -> Msg
 updateInput str =
     Input.UpdateInput str
         |> MsgForInput
-    
 
 
 --enterInput : String -> Msg
