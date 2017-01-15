@@ -4,14 +4,14 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 
 import State.Types exposing (..)
-import App.Input.Container as Input exposing (..)
+import App.Input.Connector as Input exposing (..)
 
 
 view : Model -> Html Msg
 view model =
     div []
         [ title
-        , Input.container model
+        , Input.connector model
         , infoFooter
         ]
 

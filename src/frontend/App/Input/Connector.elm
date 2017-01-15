@@ -1,4 +1,4 @@
-module App.Input.Container exposing (..)
+module App.Input.Connector exposing (..)
 
 import Html exposing (Html)
 
@@ -10,8 +10,8 @@ import App.Input.Types exposing (..)
 
 -- CONTAINER
 
-container : Model -> Html Msg
-container model =
+connector : Model -> Html Msg
+connector model =
     view (connect model)
 
 
