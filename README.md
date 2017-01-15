@@ -1,1 +1,3 @@
-# lister-elm-component-design
+# lister-elm-connector-pattern
+
+An explanation is in the works... :)
