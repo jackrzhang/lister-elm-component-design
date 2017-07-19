@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Navigation
 
-import State.Types exposing (Model, Msg(UrlChange))
+import State.Types exposing (Model, Msg(Initialize))
 import State.Update
 import App.View
 
@@ -10,7 +10,7 @@ import App.View
 main : Program Never Model Msg
 main =
     Navigation.program
-        UrlChange
+        Initialize
         { init = State.Update.init
         , update = State.Update.update
         , view = App.View.view

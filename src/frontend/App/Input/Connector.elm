@@ -16,7 +16,7 @@ connect : Model -> Interface
 connect model =
     { text_ = text_ model
     , updateInput = updateInput
-    --, enterInput = (enterInput model)
+    , enterInput = (enterInput model)
     }
 
 
@@ -35,15 +35,15 @@ updateInput str =
         |> MsgForInput
 
 
---enterInput : String -> Msg
---enterInput text =
---    if text == "" then
---        App.NoOp
---    else
---        App.ChainMsgs
---            [ (addEntry text)
---            , (MsgForInput Input.ClearInput)
---            ]
+enterInput : Model -> Msg
+enterInput model =
+    if model.input.text == "" then
+        NoOp
+    else
+        ChainMsgs
+            [ (MsgForInput Input.ClearInput)
+            --, (addEntry text)
+            ]
 
 
 --addEntry : String -> Msg

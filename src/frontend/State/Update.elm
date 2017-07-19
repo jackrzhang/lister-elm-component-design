@@ -1,28 +1,32 @@
 module State.Update exposing (..)
 
 import Navigation exposing (Location)
+import Paths exposing (..)
 
 import State.Types exposing (..)
+import State.Control.Types exposing (Filter(..))
 import State.Input.Update as Input exposing (..)
+import State.Control.Update as Control exposing (..)
 
 
 -- INIT
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( (locationToModel location initialModel), initialCmd )
+    ( (pathToModel location initialModel), initialCmd )
 
 
 initialModel : Model
 initialModel =
     { input = Input.initialModel
+    , control = Control.initialModel
     }
 
 
 initialCmd : Cmd Msg
 initialCmd =
     Cmd.batch
-        [ 
+        [
         ]
 
 
@@ -34,19 +38,34 @@ update msg model =
         NoOp -> 
             model ! []
 
-        UrlChange location ->
-            (locationToModel location model) ! []
+        Initialize location ->
+            (pathToModel location model) ! []
+
+        SyncPath ->
+            model ! [ Navigation.newUrl (modelToPath model) ]
+
+        ChainMsgs msgs ->
+            (List.foldl chain (model ! []) msgs)
 
         MsgForInput inputMsg ->
             let input =
                 Input.updateModel inputMsg model.input
-            in 
+            in
                 { model | input = input } ! []
+
+        MsgForControl controlMsg ->
+            let control =
+                Control.updateModel controlMsg model.control
+            in
+                { model | control = control } ! []
 
 
 
 -- HELPERS
 
-locationToModel : Location -> Model -> Model
-locationToModel location model =
-    model
+chain : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+chain msg ( model, cmd ) =
+    let ( nextModel, nextCmd ) =
+        update msg model
+    in
+        nextModel ! [ cmd, nextCmd ]
