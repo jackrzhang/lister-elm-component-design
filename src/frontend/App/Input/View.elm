@@ -6,7 +6,14 @@ import Html.Events exposing (onInput)
 --import Utility.OnEnter exposing (onEnter)
 
 import State.Types exposing (Msg)
-import App.Input.Types exposing (Interface)
+
+
+-- INTERFACE
+
+type alias Interface =
+    { text_ : String
+    , updateInput : String -> Msg
+    }
 
 
 -- VIEW

@@ -4,11 +4,8 @@ import Html exposing (Html)
 
 import State.Types exposing (..)
 import State.Input.Types as Input
-import App.Input.View exposing (view)
-import App.Input.Types exposing (..)
+import App.Input.View exposing (..)
 
-
--- CONTAINER
 
 connector : Model -> Html Msg
 connector model =
@@ -17,18 +14,20 @@ connector model =
 
 connect : Model -> Interface
 connect model =
-    let
-        text =
-            model.input.text
-
-    in 
-        { text_ = text
-        , updateInput = updateInput
-        --, enterInput = (enterInput model)
-        }
+    { text_ = text_ model
+    , updateInput = updateInput
+    --, enterInput = (enterInput model)
+    }
 
 
--- MSG INTERFACES
+-- MODEL -> INTERFACE
+
+text_ : Model -> String
+text_ model =
+    model.input.text
+
+
+-- MSG -> INTERFACE
 
 updateInput : String -> Msg
 updateInput str =
