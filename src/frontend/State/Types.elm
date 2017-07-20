@@ -3,6 +3,7 @@ module State.Types exposing (..)
 import Navigation exposing (Location)
 
 import State.Input.Types as Input
+import State.Entries.Types as Entries
 import State.Control.Types as Control
 
 
@@ -10,10 +11,9 @@ import State.Control.Types as Control
 
 type alias Model =
     { input : Input.Model
+    , entries : Entries.Model
     , control : Control.Model
     }
-
-type alias Path = String
 
 
 -- MSG
@@ -24,4 +24,5 @@ type Msg
     | SyncPath
     | ChainMsgs (List Msg)
     | MsgForInput Input.Msg
+    | MsgForEntries Entries.Msg
     | MsgForControl Control.Msg

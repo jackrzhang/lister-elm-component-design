@@ -6,6 +6,7 @@ import Paths exposing (..)
 import State.Types exposing (..)
 import State.Control.Types exposing (Filter(..))
 import State.Input.Update as Input exposing (..)
+import State.Entries.Update as Entries exposing (..)
 import State.Control.Update as Control exposing (..)
 
 
@@ -19,6 +20,7 @@ init location =
 initialModel : Model
 initialModel =
     { input = Input.initialModel
+    , entries = Entries.initialModel
     , control = Control.initialModel
     }
 
@@ -26,7 +28,7 @@ initialModel =
 initialCmd : Cmd Msg
 initialCmd =
     Cmd.batch
-        [
+        [ Entries.initialCmd
         ]
 
 
@@ -52,6 +54,12 @@ update msg model =
                 Input.updateModel inputMsg model.input
             in
                 { model | input = input } ! []
+
+        MsgForEntries entriesMsg ->
+            let ( entries, cmd ) =
+                Entries.update entriesMsg model.entries
+            in
+                { model | entries = entries } ! [ cmd ]
 
         MsgForControl controlMsg ->
             let control =
