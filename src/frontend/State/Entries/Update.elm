@@ -50,6 +50,14 @@ updateModel msg model =
         AddEntryResponse (Err _) ->
             model
 
+        RemoveEntryResponse (Ok id) ->
+            { model
+                | list = List.filter (\entry -> not <| entry.id == id) model.list
+            }
+
+        RemoveEntryResponse (Err _) ->
+            model
+
 
 updateCmd : CmdMsg -> Model -> Cmd S.Msg
 updateCmd msg model =
@@ -59,3 +67,6 @@ updateCmd msg model =
 
         AddEntryRequest text ->
             Rest.addEntry text
+
+        RemoveEntryRequest id ->
+            Rest.removeEntry id

@@ -2,7 +2,7 @@ module App.Entries.View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
---import Html.Events exposing (onClick)
+import Html.Events exposing (onClick)
 
 import State.Types exposing (..)
 import State.Entries.Types exposing (Entry)
@@ -12,6 +12,7 @@ import State.Entries.Types exposing (Entry)
 
 type alias Interface =
     { filteredList : List Entry
+    , removeEntry : Int -> Msg
     }
 
 
@@ -24,17 +25,22 @@ view interface =
 
     in
         div []
-            [ div [] (List.map viewEntry filteredList)
+            [ div [] (List.map (viewEntry interface) filteredList)
             ]
 
 
-viewEntry : Entry -> Html Msg
-viewEntry entry =
-    let textStyle =
-        if entry.complete then
-            " complete"
-        else
-            " active"
+viewEntry : Interface -> Entry -> Html Msg
+viewEntry { removeEntry } entry =
+    let
+        textStyle =
+            if entry.complete then
+                " complete"
+            else
+                " active"
+
+        clickX =
+            removeEntry entry.id
+
     in
         div [ class "entry" ]
             [ span
@@ -50,7 +56,7 @@ viewEntry entry =
             , div [ class "container" ]
                 [ span 
                     [ class "x" 
-                    --, onClick (removeEntry entry.id)
+                    , onClick clickX
                     ] 
                     [ text " ×" 
                     ]

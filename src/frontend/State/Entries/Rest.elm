@@ -14,9 +14,15 @@ fetchAll : Cmd Msg
 fetchAll =
     Http.send fetchAllResponse getEntries
 
+
 addEntry : String -> Cmd Msg
 addEntry text =
     Http.send addEntryResponse (postEntry text)
+
+
+removeEntry : Int -> Cmd Msg
+removeEntry id =
+    Http.send removeEntryResponse (deleteEntry id)
 
 
 -- MSG CONTAINERS
@@ -35,6 +41,13 @@ addEntryResponse result =
         |> MsgForEntries
 
 
+removeEntryResponse : Result Error Int -> Msg
+removeEntryResponse result =
+    Entries.RemoveEntryResponse result
+        |> Entries.MsgForModel
+        |> MsgForEntries
+
+
 -- REQUESTS
 
 getEntries : Http.Request (List Entry)
@@ -46,6 +59,18 @@ postEntry : String -> Http.Request Entry
 postEntry text =
      Http.post entriesUrl (Http.jsonBody (entryEncoder text False)) entryDecoder
 
+
+deleteEntry : Int -> Http.Request Int
+deleteEntry id =
+    Http.request
+        { method = "DELETE"
+        , headers = []
+        , url = entryUrl id
+        , body = Http.emptyBody
+        , expect = Http.expectStringResponse (\_ -> Ok id)
+        , timeout = Nothing
+        , withCredentials = False
+        }
 
 
 -- RESOURCES

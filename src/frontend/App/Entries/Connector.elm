@@ -16,6 +16,7 @@ connector model =
 connect : Model -> Interface
 connect model =
     { filteredList = filteredList model.control.filter model.entries.list
+    , removeEntry = removeEntry
     }
 
 
@@ -36,3 +37,8 @@ filteredList filter list =
 
 -- MSG -> INTERFACE
 
+removeEntry : Int -> Msg
+removeEntry id =
+    Entries.RemoveEntryRequest id
+        |> Entries.MsgForCmd
+        |> MsgForEntries
