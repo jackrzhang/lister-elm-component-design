@@ -2,26 +2,37 @@ module State.Entries.Rest exposing (..)
 
 import Http exposing (Error)
 import Json.Decode as Decode
---import Json.Encode as Encode
+import Json.Encode as Encode
 
-import State.Types as S
+import State.Types exposing (..)
 import State.Entries.Types as Entries exposing (Entry)
 
 
 -- COMMANDS
 
-fetchAll : Cmd S.Msg
+fetchAll : Cmd Msg
 fetchAll =
     Http.send fetchAllResponse getEntries
+
+addEntry : String -> Cmd Msg
+addEntry text =
+    Http.send addEntryResponse (postEntry text)
 
 
 -- MSG CONTAINERS
 
-fetchAllResponse : Result Error (List Entry) -> S.Msg
+fetchAllResponse : Result Error (List Entry) -> Msg
 fetchAllResponse result =
     Entries.FetchAllResponse result
         |> Entries.MsgForModel
-        |> S.MsgForEntries
+        |> MsgForEntries
+
+
+addEntryResponse : Result Error Entry -> Msg
+addEntryResponse result =
+    Entries.AddEntryResponse result
+        |> Entries.MsgForModel
+        |> MsgForEntries
 
 
 -- REQUESTS
@@ -29,6 +40,12 @@ fetchAllResponse result =
 getEntries : Http.Request (List Entry)
 getEntries =
     Http.get entriesUrl entriesDecoder
+
+
+postEntry : String -> Http.Request Entry
+postEntry text =
+     Http.post entriesUrl (Http.jsonBody (entryEncoder text False)) entryDecoder
+
 
 
 -- RESOURCES
@@ -59,3 +76,11 @@ entryDecoder =
 
 
 -- ENCODERS
+
+entryEncoder : String -> Bool -> Encode.Value
+entryEncoder text complete =
+    Encode.object
+        [ ( "text", Encode.string text )
+        , ( "complete", Encode.bool complete )
+        ]
+

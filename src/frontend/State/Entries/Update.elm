@@ -42,9 +42,20 @@ updateModel msg model =
         FetchAllResponse (Err _) ->
             model
 
+        AddEntryResponse (Ok entry) ->
+            { model
+                | list = List.append model.list [ entry ]
+            }
+
+        AddEntryResponse (Err _) ->
+            model
+
 
 updateCmd : CmdMsg -> Model -> Cmd S.Msg
 updateCmd msg model =
     case msg of
         FetchAllRequest ->
-            Rest.fetchAll        
+            Rest.fetchAll
+
+        AddEntryRequest text ->
+            Rest.addEntry text

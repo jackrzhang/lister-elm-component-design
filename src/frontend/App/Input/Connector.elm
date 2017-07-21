@@ -4,6 +4,7 @@ import Html exposing (Html)
 
 import State.Types exposing (..)
 import State.Input.Types as Input
+import State.Entries.Types as Entries
 import App.Input.View exposing (..)
 
 
@@ -42,12 +43,12 @@ enterInput model =
     else
         ChainMsgs
             [ (MsgForInput Input.ClearInput)
-            --, (addEntry text)
+            , (addEntry model.input.text)
             ]
 
 
---addEntry : String -> Msg
---addEntry text =
---    Entries.AddEntryRequest text
---        |> Entries.MsgForCmd
---        |> App.MsgForEntries
+addEntry : String -> Msg
+addEntry text =
+    Entries.AddEntryRequest text
+        |> Entries.MsgForCmd
+        |> MsgForEntries
