@@ -13,6 +13,7 @@ import State.Entries.Types exposing (Entry)
 type alias Interface =
     { filteredList : List Entry
     , removeEntry : Int -> Msg
+    , toggleComplete : Entry -> Msg
     }
 
 
@@ -30,7 +31,7 @@ view interface =
 
 
 viewEntry : Interface -> Entry -> Html Msg
-viewEntry { removeEntry } entry =
+viewEntry interface entry =
     let
         textStyle =
             if entry.complete then
@@ -39,13 +40,16 @@ viewEntry { removeEntry } entry =
                 " active"
 
         clickX =
-            removeEntry entry.id
+            interface.removeEntry entry.id
+
+        clickCheck =
+            interface.toggleComplete entry
 
     in
         div [ class "entry" ]
             [ span
                 [ class "checkmark" 
-                --, onClick (toggleComplete entry)
+                , onClick clickCheck
                 ]
                 [ text "☑ "
                 ]

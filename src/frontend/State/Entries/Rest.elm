@@ -25,6 +25,14 @@ removeEntry id =
     Http.send removeEntryResponse (deleteEntry id)
 
 
+toggleComplete : Entry -> Cmd Msg
+toggleComplete entry =
+    let updatedEntry =
+        { entry | complete = not entry.complete }
+    in
+        Http.send toggleCompleteResponse (putEntry updatedEntry)
+
+
 -- MSG CONTAINERS
 
 fetchAllResponse : Result Error (List Entry) -> Msg
@@ -44,6 +52,13 @@ addEntryResponse result =
 removeEntryResponse : Result Error Int -> Msg
 removeEntryResponse result =
     Entries.RemoveEntryResponse result
+        |> Entries.MsgForModel
+        |> MsgForEntries
+
+
+toggleCompleteResponse : Result Error Entry -> Msg
+toggleCompleteResponse result =
+    Entries.ToggleCompleteResponse result
         |> Entries.MsgForModel
         |> MsgForEntries
 
@@ -68,6 +83,19 @@ deleteEntry id =
         , url = entryUrl id
         , body = Http.emptyBody
         , expect = Http.expectStringResponse (\_ -> Ok id)
+        , timeout = Nothing
+        , withCredentials = False
+        }
+
+
+putEntry : Entry -> Http.Request Entry
+putEntry { id, text, complete } =
+    Http.request
+        { method = "PUT"
+        , headers = []
+        , url = entryUrl id
+        , body = Http.jsonBody (entryEncoder text complete)
+        , expect = Http.expectJson entryDecoder
         , timeout = Nothing
         , withCredentials = False
         }

@@ -58,6 +58,14 @@ updateModel msg model =
         RemoveEntryResponse (Err _) ->
             model
 
+        ToggleCompleteResponse (Ok entry) ->
+            { model
+                | list = toggleComplete entry.id model.list
+            }
+
+        ToggleCompleteResponse (Err _) ->
+            model
+
 
 updateCmd : CmdMsg -> Model -> Cmd S.Msg
 updateCmd msg model =
@@ -70,3 +78,22 @@ updateCmd msg model =
 
         RemoveEntryRequest id ->
             Rest.removeEntry id
+
+        ToggleCompleteRequest entry ->
+            Rest.toggleComplete entry
+
+
+-- HELPERS
+
+toggleComplete : Int -> List Entry -> List Entry
+toggleComplete id entries =
+    List.map (updateEntry id) entries
+
+
+updateEntry : Int -> Entry -> Entry
+updateEntry id =
+    \entry ->
+        if entry.id == id then
+            { entry | complete = not entry.complete }
+        else
+            entry

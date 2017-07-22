@@ -17,6 +17,7 @@ connect : Model -> Interface
 connect model =
     { filteredList = filteredList model.control.filter model.entries.list
     , removeEntry = removeEntry
+    , toggleComplete = toggleComplete
     }
 
 
@@ -42,3 +43,10 @@ removeEntry id =
     Entries.RemoveEntryRequest id
         |> Entries.MsgForCmd
         |> MsgForEntries
+
+
+toggleComplete : Entry -> Msg
+toggleComplete entry =
+    Entries.ToggleCompleteRequest entry
+        |> Entries.MsgForCmd
+        |> MsgForEntries 
