@@ -10,7 +10,7 @@ import State.Control.Types exposing (Filter)
 type alias Entry =
     { id : Int
     , text : String
-    , complete : Bool
+    , isComplete : Bool
     }
 
 

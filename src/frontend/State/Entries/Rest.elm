@@ -28,7 +28,7 @@ removeEntry id =
 toggleComplete : Entry -> Cmd Msg
 toggleComplete entry =
     let updatedEntry =
-        { entry | complete = not entry.complete }
+        { entry | isComplete = not entry.isComplete }
     in
         Http.send toggleCompleteResponse (putEntry updatedEntry)
 
@@ -89,12 +89,12 @@ deleteEntry id =
 
 
 putEntry : Entry -> Http.Request Entry
-putEntry { id, text, complete } =
+putEntry { id, text, isComplete } =
     Http.request
         { method = "PUT"
         , headers = []
         , url = entryUrl id
-        , body = Http.jsonBody (entryEncoder text complete)
+        , body = Http.jsonBody (entryEncoder text isComplete)
         , expect = Http.expectJson entryDecoder
         , timeout = Nothing
         , withCredentials = False
@@ -125,15 +125,15 @@ entryDecoder =
     Decode.map3 Entry
         (Decode.field "id" Decode.int)
         (Decode.field "text" Decode.string)
-        (Decode.field "complete" Decode.bool)
+        (Decode.field "isComplete" Decode.bool)
 
 
 -- ENCODERS
 
 entryEncoder : String -> Bool -> Encode.Value
-entryEncoder text complete =
+entryEncoder text isComplete =
     Encode.object
         [ ( "text", Encode.string text )
-        , ( "complete", Encode.bool complete )
+        , ( "isComplete", Encode.bool isComplete )
         ]
 

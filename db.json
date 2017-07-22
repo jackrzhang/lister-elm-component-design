@@ -2,12 +2,12 @@
   "entries": [
     {
       "text": "Buy some milk!",
-      "complete": false,
+      "isComplete": false,
       "id": 0
     },
     {
       "text": "Learn Elm",
-      "complete": false,
+      "isComplete": false,
       "id": 1
     }
   ]

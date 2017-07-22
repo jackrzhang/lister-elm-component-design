@@ -30,10 +30,10 @@ filteredList filter list =
             list
 
         Active ->
-            List.filter (\entry -> entry.complete == False) list
+            List.filter (\entry -> entry.isComplete == False) list
 
         Complete ->
-            List.filter (\entry -> entry.complete == True) list
+            List.filter (\entry -> entry.isComplete == True) list
 
 
 -- MSG -> INTERFACE

@@ -94,6 +94,6 @@ updateEntry : Int -> Entry -> Entry
 updateEntry id =
     \entry ->
         if entry.id == id then
-            { entry | complete = not entry.complete }
+            { entry | isComplete = not entry.isComplete }
         else
             entry

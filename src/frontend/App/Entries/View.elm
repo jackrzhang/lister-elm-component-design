@@ -34,7 +34,7 @@ viewEntry : Interface -> Entry -> Html Msg
 viewEntry interface entry =
     let
         textStyle =
-            if entry.complete then
+            if entry.isComplete then
                 " complete"
             else
                 " active"
