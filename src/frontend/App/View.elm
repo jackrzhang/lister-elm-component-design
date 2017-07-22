@@ -24,7 +24,7 @@ title : Html Msg
 title =
     header []
         [ h1 []
-            [ a [ href "https://github.com/jackrzhang/lister-elm" ] 
+            [ a [ href "https://github.com/jackrzhang/lister-elm-connector-pattern" ] 
                 [ text "lister"] 
             ]
         ]
