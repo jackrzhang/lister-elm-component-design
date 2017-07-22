@@ -5,7 +5,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 
 import State.Types exposing (..)
-import State.Entries.Types as Entries exposing (Entry)
+import State.Entries.Types as Entries exposing (PersistedEntry)
 
 
 -- COMMANDS
@@ -25,24 +25,26 @@ removeEntry id =
     Http.send removeEntryResponse (deleteEntry id)
 
 
-toggleComplete : Entry -> Cmd Msg
+toggleComplete : PersistedEntry -> Cmd Msg
 toggleComplete entry =
-    let updatedEntry =
-        { entry | isComplete = not entry.isComplete }
-    in
-        Http.send toggleCompleteResponse (putEntry updatedEntry)
+    Http.send toggleCompleteResponse (putEntry entry)
+
+
+editText : PersistedEntry -> Cmd Msg
+editText entry =
+    Http.send editTextResponse (putEntry entry)
 
 
 -- MSG CONTAINERS
 
-fetchAllResponse : Result Error (List Entry) -> Msg
+fetchAllResponse : Result Error (List PersistedEntry) -> Msg
 fetchAllResponse result =
     Entries.FetchAllResponse result
         |> Entries.MsgForModel
         |> MsgForEntries
 
 
-addEntryResponse : Result Error Entry -> Msg
+addEntryResponse : Result Error PersistedEntry -> Msg
 addEntryResponse result =
     Entries.AddEntryResponse result
         |> Entries.MsgForModel
@@ -56,21 +58,28 @@ removeEntryResponse result =
         |> MsgForEntries
 
 
-toggleCompleteResponse : Result Error Entry -> Msg
+toggleCompleteResponse : Result Error PersistedEntry -> Msg
 toggleCompleteResponse result =
     Entries.ToggleCompleteResponse result
         |> Entries.MsgForModel
         |> MsgForEntries
 
 
+editTextResponse : Result Error PersistedEntry -> Msg
+editTextResponse result =
+    Entries.EditTextResponse result
+        |> Entries.MsgForModel
+        |> MsgForEntries
+
+
 -- REQUESTS
 
-getEntries : Http.Request (List Entry)
+getEntries : Http.Request (List PersistedEntry)
 getEntries =
     Http.get entriesUrl entriesDecoder
 
 
-postEntry : String -> Http.Request Entry
+postEntry : String -> Http.Request PersistedEntry
 postEntry text =
      Http.post entriesUrl (Http.jsonBody (entryEncoder text False)) entryDecoder
 
@@ -88,7 +97,7 @@ deleteEntry id =
         }
 
 
-putEntry : Entry -> Http.Request Entry
+putEntry : PersistedEntry -> Http.Request PersistedEntry
 putEntry { id, text, isComplete } =
     Http.request
         { method = "PUT"
@@ -115,14 +124,14 @@ entryUrl id =
 
 -- DECODERS
 
-entriesDecoder : Decode.Decoder (List Entry)
+entriesDecoder : Decode.Decoder (List PersistedEntry)
 entriesDecoder =
     Decode.list entryDecoder
 
 
-entryDecoder : Decode.Decoder Entry
+entryDecoder : Decode.Decoder PersistedEntry
 entryDecoder =
-    Decode.map3 Entry
+    Decode.map3 PersistedEntry
         (Decode.field "id" Decode.int)
         (Decode.field "text" Decode.string)
         (Decode.field "isComplete" Decode.bool)

@@ -11,13 +11,31 @@ type alias Entry =
     { id : Int
     , text : String
     , isComplete : Bool
+    , isEditing: Bool
+    , editingInput : String
     }
+
+
+type alias PersistedEntry =
+    { id : Int
+    , text : String
+    , isComplete : Bool
+    }
+
+
+toPersistedEntry : Entry -> PersistedEntry
+toPersistedEntry { id, text, isComplete } =
+    PersistedEntry id text isComplete
+
+
+toModelEntry : PersistedEntry -> Entry
+toModelEntry { id, text, isComplete } =
+    Entry id text isComplete False ""
 
 
 type alias Model =
     { list : List Entry
     , filter : Filter
-    , currentId : Int
     }
 
 
@@ -29,10 +47,14 @@ type Msg
 
 
 type ModelMsg
-    = FetchAllResponse (Result Error (List Entry))
-    | AddEntryResponse (Result Error Entry)
+    = FetchAllResponse (Result Error (List PersistedEntry))
+    | AddEntryResponse (Result Error PersistedEntry)
     | RemoveEntryResponse (Result Error Int)
-    | ToggleCompleteResponse (Result Error Entry)
+    | ToggleCompleteResponse (Result Error PersistedEntry)
+    | StartEditing Int
+    | StopEditing Int
+    | UpdateEditingInput Int String
+    | EditTextResponse (Result Error PersistedEntry)
 
 
 type CmdMsg
@@ -40,3 +62,4 @@ type CmdMsg
     | AddEntryRequest String
     | RemoveEntryRequest Int
     | ToggleCompleteRequest Entry
+    | EditTextRequest Entry

@@ -1,7 +1,10 @@
-/* imports */
+/* IMPORTS */
+
 @import url('https://fonts.googleapis.com/css?family=Unna');
 
-/* variables */
+
+/* VARIABLES  */
+
 $font-stack: 'Unna', serif;
 $accent-color: rgb(12, 100, 100);
 $hover-color: mix(white, $accent-color, 20%);
@@ -14,10 +17,12 @@ body {
 
 html,
 input {
-  font-family: $font-stack;
+  font-family: 'Unna', serif;;
 }
 
-/* document level adjustments  */
+
+/* DOCUMENT LEVEL ADJUSTMENTS  */
+
 html {
   font-size: 17px;
 }
@@ -27,7 +32,9 @@ html {
   }
 }
 
-/* element styling */
+
+/* ELEMENT STYLING */
+
 body {
   height: 100%;
   text-align: center;
@@ -53,7 +60,7 @@ h1 {
   color: $accent-color;
 }
 
-input {
+input.new-item {
   outline: none;
   padding: 5px 10px;
   width: 15rem;
@@ -63,16 +70,17 @@ input {
   border-bottom: 1px solid $accent-color;
   font-size: 1.2rem;
 }
-input::placeholder {
+input.new-item::placeholder {
   color: rgb(160, 160, 160);
 }
 
 div.entry {
   text-align: left;
   font-size: 1.2rem;
-  margin: .7rem auto;
+  margin: 0.7rem auto;
   width: 20rem;
   max-width: 85vw;
+  position: relative;
 
   span.text.complete {
     text-decoration: line-through;
@@ -80,15 +88,32 @@ div.entry {
   }
 
   span.checkmark,
-  span.x {
-    font-size: 1.5rem;
+  span.x,
+  span.edit {
     line-height: 1.2rem;
     color: $accent-color;
     cursor: pointer;
   }
   span.checkmark:hover,
-  span.x:hover {
+  span.x:hover,
+  span.edit:hover {
     color: $hover-color;
+  }
+  span.checkmark {
+    font-size: 1.5rem;
+    position: relative;
+    top: 1px;
+    left: -5px;
+  }
+  span.x {
+    font-size: 1.5rem;
+    position: relative;
+    top: 0;
+  }
+  span.edit {
+    font-size: 0.7rem;
+    position: relative;
+    top: -2px;
   }
 
   div.container {
@@ -97,7 +122,28 @@ div.entry {
     span.x {
       display: inline-block;
       text-align: right;
-      width: 1.5rem;
+      width: 1.2rem;
+    }
+  }
+
+  span.edit-container {
+    position: relative;
+
+    input.edit-item {
+      outline: none;
+      width: 20rem;
+      max-width: 85vw;
+      border: none;
+      border-bottom: 1px solid rgb(12, 100, 100);
+      font-size: 1.2rem;
+    }
+    input.edit-item::placeholder {
+      color: rgb(160, 160, 160);
+    }
+
+    span.x {
+      position: absolute;
+      right: 2px;
     }
   }
 }
@@ -108,7 +154,7 @@ div.control {
   a.filter {
     font-size: 1rem;
     line-height: 1.4rem;
-    margin: 0 .3rem;
+    margin: 0 0.4rem;
     cursor: pointer;
     color: rgb(50, 50, 50);
   }

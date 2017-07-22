@@ -18,6 +18,10 @@ connect model =
     { filteredList = filteredList model.control.filter model.entries.list
     , removeEntry = removeEntry
     , toggleComplete = toggleComplete
+    , startEditing = startEditing
+    , stopEditing = stopEditing
+    , updateEditingInput = updateEditingInput
+    , editText = editText
     }
 
 
@@ -50,3 +54,32 @@ toggleComplete entry =
     Entries.ToggleCompleteRequest entry
         |> Entries.MsgForCmd
         |> MsgForEntries 
+
+
+startEditing : Int -> Msg
+startEditing id =
+    Entries.StartEditing id
+        |> Entries.MsgForModel
+        |> MsgForEntries
+
+
+stopEditing : Int -> Msg
+stopEditing id =
+    Entries.StopEditing id
+        |> Entries.MsgForModel
+        |> MsgForEntries
+
+
+updateEditingInput : Int -> String -> Msg
+updateEditingInput id text =
+    Entries.UpdateEditingInput id text
+        |> Entries.MsgForModel
+        |> MsgForEntries
+
+
+editText : Entry -> Msg
+editText entry =
+    Entries.EditTextRequest entry
+        |> Entries.MsgForCmd
+        |> MsgForEntries
+

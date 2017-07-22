@@ -29,6 +29,7 @@ view interface =
             [ span [ class "caret" ] [ text "❯ " ]
             , input
                 [ type_ "text"
+                , class "new-item"
                 , placeholder "write stuff, hit enter"
                 , autofocus True
                 , value text_
